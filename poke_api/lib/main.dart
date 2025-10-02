@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:poke_api/screens/MainScreen.dart';
+import 'package:poke_api/screens/main_screen.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.purple),
-      home: Scaffold(appBar: CustomAppBar(), body: MainScreen()),
-    );
+    return MaterialApp(title: 'PokeApi', home: FullHomeScreen());
   }
 }
