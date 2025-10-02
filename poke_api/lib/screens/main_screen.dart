@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert'; // Needed for JSON decoding
-// At the top of the file where the error occurs (e.g., your main widget file)
 
-// Define the Post class (your data model)
+/* ALL OF THIS IS FOR THE DATA FETCHING FROM THE API
 class Pokemon {
   final String name;
   final String abilities;
@@ -19,7 +18,7 @@ class Pokemon {
 Future<Pokemon> fetchPost() async {
   final uri = Uri.parse(
     'https://pokeapi.co/api/v2/pokemon/ditto1',
-  ); // Replace with your API endpoint
+  ); 
   final response = await http.get(uri);
 
   if (response.statusCode == 200) {
@@ -31,7 +30,7 @@ Future<Pokemon> fetchPost() async {
     // throw an exception.
     throw Exception('Failed to load post. Status code: ${response.statusCode}');
   }
-}
+}*/
 
 class FullHomeScreen extends StatefulWidget {
   const FullHomeScreen({super.key});
