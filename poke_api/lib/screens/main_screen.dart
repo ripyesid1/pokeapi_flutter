@@ -1,36 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert'; // Needed for JSON decoding
-
-/* ALL OF THIS IS FOR THE DATA FETCHING FROM THE API
-class Pokemon {
-  final String name;
-  final String abilities;
-
-  Pokemon({required this.name, required this.abilities});
-
-  // Factory method to create a Post object from a JSON map
-  factory Pokemon.fromJson(Map<String, dynamic> json) {
-    return Pokemon(name: json['name'], abilities: json['abilities']);
-  }
-}
-
-Future<Pokemon> fetchPost() async {
-  final uri = Uri.parse(
-    'https://pokeapi.co/api/v2/pokemon/ditto1',
-  ); 
-  final response = await http.get(uri);
-
-  if (response.statusCode == 200) {
-    // If the server returns an OK response, parse the JSON.
-    final jsonBody = json.decode(response.body);
-    return Pokemon.fromJson(jsonBody);
-  } else {
-    // If the server did not return a 200 OK response,
-    // throw an exception.
-    throw Exception('Failed to load post. Status code: ${response.statusCode}');
-  }
-}*/
+import 'package:poke_api/fetching/api_call.dart';
 
 class FullHomeScreen extends StatefulWidget {
   const FullHomeScreen({super.key});
@@ -40,26 +9,51 @@ class FullHomeScreen extends StatefulWidget {
 }
 
 class _FullHomeScreenState extends State<FullHomeScreen> {
+  Future<Pokemon> getPokemon() async {
+    PokemonCall call = PokemonCall();
+    Pokemon pokemon = await call.getPokemon(7);
+    return pokemon;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: CustomAppBar(), body: HomeScreenBody());
+    return Scaffold(
+      appBar: CustomAppBar(),
+      body: FutureBuilder(
+        future: getPokemon(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            return HomeScreenBody(pokemon: snapshot.data);
+          }
+        },
+      ),
+    );
   }
 }
 
-class HomeScreenBody extends StatelessWidget {
-  const HomeScreenBody({super.key});
+class HomeScreenBody extends StatefulWidget {
+  final Pokemon pokemon;
+  const HomeScreenBody({super.key, required this.pokemon});
 
+  @override
+  State<HomeScreenBody> createState() => _HomeScreenBodyState();
+}
+
+class _HomeScreenBodyState extends State<HomeScreenBody> {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         SizedBox(height: 150),
-        PokemonImage(
-          url:
-              "https://images.wikidexcdn.net/mwuploads/wikidex/7/77/latest/20150621181250/Pikachu.png",
-        ),
+        PokemonImage(url: widget.pokemon.image),
         SizedBox(height: 80),
-        PokemonDescription(name: "Pikachu", type: "Electric", habitat: "Por ahi"),
+        PokemonDescription(
+          name: widget.pokemon.name,
+          hp: widget.pokemon.health,
+          baseExperience: widget.pokemon.baseExperience,
+        ),
       ],
     );
   }
@@ -84,13 +78,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 class PokemonDescription extends StatefulWidget {
   final String name;
-  final String type;
-  final String habitat;
+  final int hp;
+  final int baseExperience;
   const PokemonDescription({
     super.key,
     required this.name,
-    required this.type,
-    required this.habitat,
+    required this.hp,
+    required this.baseExperience,
   });
 
   @override
@@ -110,9 +104,9 @@ class _PokemonDescriptionState extends State<PokemonDescription> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            Text("Pokemon name: ${widget.name}"),
-            Text("Pokemon type: ${widget.type}"),
-            Text("Pokemon Habitat: ${widget.habitat}"),
+            Text("Name: ${widget.name}"),
+            Text("Health: ${widget.hp}"),
+            Text("Base Experience: ${widget.baseExperience}"),
           ],
         ),
       ),
