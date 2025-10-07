@@ -37,40 +37,23 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: CustomAppBar(
         title: "Pokemon App",
-        color: Colors.yellowAccent,
+        color: Colors.blueGrey,
         icon: Icons.catching_pokemon,
       ),
       body: FutureBuilder(
         future: fillData(index),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Column(
-              children: [
-                CircularProgressIndicator(),
-                SizedBox(width: 10, height: 10),
-                Text("Data is loading..."),
-              ],
-            );
+            return LoadingScreen();
           } else if (snapshot.hasData) {
             Pokemon pokemon = Pokemon.fromJson(snapshot.data!);
-            return Column(
-              children: [
-                Image.network(pokemon.image),
-                Description(
-                  name: pokemon.name,
-                  hp: pokemon.health,
-                  baseExperience: pokemon.baseExperience,
-                  color: Colors.yellowAccent,
-                ),
-                FloatingActionButton(
-                  onPressed: () {
-                    setState(() {
-                      index++;
-                    });
-                  },
-                  child: Icon(Icons.catching_pokemon_sharp),
-                ),
-              ],
+            return PokemonDisplayCard(
+              pokemon: pokemon,
+              onCatchPressed: () {
+                setState(() {
+                  index++;
+                });
+              },
             );
           } else {
             return Text("No data found");

@@ -2,7 +2,7 @@ class Pokemon {
   final String name;
   final int health;
   final int baseExperience;
-  final String image;
+  final List<String> image;
 
   Pokemon({
     required this.name,
@@ -15,7 +15,10 @@ class Pokemon {
   factory Pokemon.fromJson(Map<String, dynamic> json) {
     String name = json['name'];
     int baseExperience = 0;
-    String image = json['sprites']['front_default'];
+    String image1 = json['sprites']['front_default'];
+    String image2 = json['sprites']['back_default'];
+    String image3 = json['sprites']['front_shiny'];
+    final List<String> image = [image1, image2, image3];
     int hp = 0;
 
     //looks for the health stat in the json
