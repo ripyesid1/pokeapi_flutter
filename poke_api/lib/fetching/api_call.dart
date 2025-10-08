@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'dart:convert'; // Needed for JSON decoding
+import 'dart:convert';
 
 class ApiCall {
   //Retrieves the Json from the PokeApi and returns the raw JSON based on the index

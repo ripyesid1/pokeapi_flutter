@@ -32,14 +32,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int index = 1;
+  List<Pokemon> loadedPokemons = [];
+  Color mainColor = Colors.blueGrey;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: "Pokemon App",
-        color: Colors.blueGrey,
-        icon: Icons.catching_pokemon,
-      ),
+      appBar: CustomAppBar(title: "Pokemon App", color: mainColor, icon: Icons.catching_pokemon),
       body: FutureBuilder(
         future: fillData(index),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -47,11 +45,25 @@ class _HomeScreenState extends State<HomeScreen> {
             return LoadingScreen();
           } else if (snapshot.hasData) {
             Pokemon pokemon = Pokemon.fromJson(snapshot.data!);
+            loadedPokemons.add(pokemon);
             return PokemonDisplayCard(
               pokemon: pokemon,
-              onCatchPressed: () {
+              onCatchPressed1: () {
+                setState(() {
+                  index--;
+                  loadedPokemons.add(pokemon);
+                });
+              },
+              onCatchPressed2: () {
+                setState(() {
+                  index = 1;
+                  loadedPokemons.add(pokemon);
+                });
+              },
+              onCatchPressed3: () {
                 setState(() {
                   index++;
+                  loadedPokemons.add(pokemon);
                 });
               },
             );

@@ -30,14 +30,12 @@ class Description extends StatefulWidget {
   final String name;
   final int hp;
   final int baseExperience;
-  final Color color;
 
   const Description({
     super.key,
     required this.name,
     required this.hp,
     required this.baseExperience,
-    required this.color,
   });
 
   @override
@@ -48,11 +46,11 @@ class _DescriptionState extends State<Description> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: widget.color, borderRadius: BorderRadius.circular(15)),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(1)),
       width: 250,
       height: 140,
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      margin: EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -84,10 +82,18 @@ class LoadingScreen extends StatelessWidget {
 }
 
 class PokemonDisplayCard extends StatelessWidget {
-  final Pokemon pokemon; // Replace 'Pokemon' with your actual model class
-  final VoidCallback onCatchPressed; // The callback function
+  final Pokemon pokemon;
+  final VoidCallback onCatchPressed1;
+  final VoidCallback onCatchPressed2;
+  final VoidCallback onCatchPressed3;
 
-  const PokemonDisplayCard({super.key, required this.pokemon, required this.onCatchPressed});
+  const PokemonDisplayCard({
+    super.key,
+    required this.pokemon,
+    required this.onCatchPressed1,
+    required this.onCatchPressed2,
+    required this.onCatchPressed3,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -101,12 +107,25 @@ class PokemonDisplayCard extends StatelessWidget {
             name: pokemon.name,
             hp: pokemon.health,
             baseExperience: pokemon.baseExperience,
-            color: const Color.fromARGB(255, 148, 191, 211),
           ),
-          FloatingActionButton(
-            // Use the passed-in callback
-            onPressed: onCatchPressed,
-            child: Icon(Icons.catching_pokemon_sharp),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FloatingActionButton(
+                onPressed: onCatchPressed1,
+                child: Icon(Icons.arrow_back_ios_new),
+              ),
+              SizedBox(width: 20),
+              FloatingActionButton(
+                onPressed: onCatchPressed2,
+                child: Icon(Icons.catching_pokemon_sharp),
+              ),
+              SizedBox(width: 20),
+              FloatingActionButton(
+                onPressed: onCatchPressed3,
+                child: Icon(Icons.arrow_forward_ios),
+              ),
+            ],
           ),
         ],
       ),
@@ -128,7 +147,7 @@ class _ImageDisplayState extends State<ImageDisplay> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: Colors.blueGrey, borderRadius: BorderRadius.circular(15)),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(1)),
       width: 250,
       height: 400,
       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),

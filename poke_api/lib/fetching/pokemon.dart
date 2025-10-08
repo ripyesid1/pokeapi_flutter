@@ -1,20 +1,29 @@
+import 'package:flutter/material.dart';
+
 class Pokemon {
   final String name;
   final int health;
   final int baseExperience;
   final List<String> image;
+  ColorScheme? colors;
 
   Pokemon({
     required this.name,
     required this.health,
     required this.baseExperience,
     required this.image,
+    required this.colors,
   });
+
+  void generateColorScheme(ImageProvider imageProvider) async {
+    ColorScheme color = await ColorScheme.fromImageProvider(provider: imageProvider);
+    colors = color;
+  }
 
   //builds the pokemon object model based on the JSON that api_call provides
   factory Pokemon.fromJson(Map<String, dynamic> json) {
     String name = json['name'];
-    int baseExperience = 0;
+    int baseExperience = json['base_experience'] as int;
     String image1 = json['sprites']['front_default'];
     String image2 = json['sprites']['back_default'];
     String image3 = json['sprites']['front_shiny'];
@@ -30,6 +39,12 @@ class Pokemon {
     }
 
     //creates and returns the pokemon object model
-    return Pokemon(name: name, health: hp, baseExperience: baseExperience, image: image);
+    return Pokemon(
+      name: name,
+      health: hp,
+      baseExperience: baseExperience,
+      image: image,
+      colors: null,
+    );
   }
 }
